@@ -1,26 +1,18 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-
-# Use my bash aliases
-source ~/.bash_aliases
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/kirkkala/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -31,11 +23,16 @@ CASE_SENSITIVE="true"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -47,12 +44,15 @@ CASE_SENSITIVE="true"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="false"
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="false"
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -66,8 +66,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="false"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
@@ -91,33 +91,6 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# NVM stuff, respect .nvmrc
-# https://github.com/nvm-sh/nvm#zsh
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
-
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -126,7 +99,39 @@ load-nvmrc
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export PATH="/usr/local/opt/php@7.1/bin:$PATH"
-export PATH="/usr/local/opt/php@7.1/sbin:$PATH"
 
-[ -s "/Users/kirkkala/.scm_breeze/scm_breeze.sh" ] && source "/Users/kirkkala/.scm_breeze/scm_breeze.sh"
+# SCM Breeze installation
+[ -s "/Users/timo.kirkkala/.scm_breeze/scm_breeze.sh" ] && source "/Users/timo.kirkkala/.scm_breeze/scm_breeze.sh"
+
+# nvm manages node
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Hide the hostname!
+prompt_context() {
+  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
+  fi
+}
+
+# PHP via brew, update the export lines to define the default
+# The php.ini and php-fpm.ini file can be found in:
+#    /opt/homebrew/etc/php/8.x/
+export PATH="/opt/homebrew/opt/php@8.1.5/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@8.1.5/sbin:$PATH"
+
+# BEGIN SNIPPET: Platform.sh CLI configuration
+HOME=${HOME:-'/Users/timo.kirkkala'}
+export PATH="$HOME/"'.platformsh/bin':"$PATH"
+if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+
+# Lando
+export PATH="/Users/timo.kirkkala/.lando/bin${PATH+:$PATH}"; #landopath
+
+# Druid's Stonehenge
+alias stonehenge='make -C ~/stonehenge'
+
