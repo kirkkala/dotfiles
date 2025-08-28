@@ -118,16 +118,16 @@ prompt_context() {
 # PHP via brew, update the export lines to define the default
 # The php.ini and php-fpm.ini file can be found in:
 #    /opt/homebrew/etc/php/8.x/
-export PATH="/opt/homebrew/opt/php@8.1.5/bin:$PATH"
-export PATH="/opt/homebrew/opt/php@8.1.5/sbin:$PATH"
+# export PATH="/opt/homebrew/opt/php@8.1.5/bin:$PATH"
+# export PATH="/opt/homebrew/opt/php@8.1.5/sbin:$PATH"
 
 # BEGIN SNIPPET: Platform.sh CLI configuration
-HOME=${HOME:-'/Users/timo.kirkkala'}
-export PATH="$HOME/"'.platformsh/bin':"$PATH"
-if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+# HOME=${HOME:-'/Users/timo.kirkkala'}
+# export PATH="$HOME/"'.platformsh/bin':"$PATH"
+# if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
+# export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+# export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+# export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 
 # Lando
 export PATH="/Users/timo.kirkkala/.lando/bin${PATH+:$PATH}"; #landopath
